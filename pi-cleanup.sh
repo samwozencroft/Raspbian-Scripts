@@ -1,5 +1,9 @@
 #!/bin/bash
  
+ #Installing dependencies
+ echo -e $YELLOW"Installing dependencies"$ENDCOLOR
+ sudo apt install aptitude -y
+ 
 OLDCONF=$(dpkg -l|grep "^rc"|awk '{print $2}')
 CURKERNEL=$(uname -r|sed 's/-*[a-z]//g'|sed 's/-386//g')
 LINUXPKG="linux-(image|headers|ubuntu-modules|restricted-modules)"
