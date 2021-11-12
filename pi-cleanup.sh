@@ -40,5 +40,13 @@ sudo apt-get --yes clean
 #GPIO Removal
 #sudo apt-get purge python-rpi.gpio
 
+#Regening ssh keys
+#sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
+
+#RPI Update
+sudo apt-get install git-core
+sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
+sudo rpi-update
+#sudo shutdown -r now
  
-echo -e $YELLOW"Script Finished"$ENDCOLOR
+echo -e $YELLOW"Script Finished...Please reboot device"$ENDCOLOR
