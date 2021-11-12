@@ -36,5 +36,9 @@ rm -rf /root/.local/share/Trash/*/** &> /dev/null
 sudo apt-get --yes autoremove
 sudo apt-get --yes autoclean
 sudo apt-get --yes clean
+
+#GPIO Removal
+#sudo apt-get purge python-rpi.gpio
+
  
 echo -e $YELLOW"Script Finished"$ENDCOLOR
