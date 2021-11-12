@@ -5,4 +5,4 @@ To run the script. First:
 sudo chmod 777 pi-cleanup.sh
 
 Start the cleanup:
-Sudo ./pi-cleanup.sh
+sudo ./pi-cleanup.sh
