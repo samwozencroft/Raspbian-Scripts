@@ -44,7 +44,15 @@ sudo apt-get --yes clean
 #sudo apt-get purge python-rpi.gpio
 
 #Regening ssh keys
-#sudo rm /etc/ssh/ssh_host_* && sudo dpkg-reconfigure openssh-server
+echo -e $YELLOW"Do you wish to install this program?"$ENDCOLOR
+while true; do
+    read -p "Do you wish to install this program?" yn
+    case $yn in
+        [Yy]* ) make install; break;;
+        [Nn]* ) exit;;
+        * ) echo "Please answer y or n.";;
+    esac
+done
 
 #RPI Update
 sudo apt-get install git-core
