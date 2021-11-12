@@ -31,5 +31,10 @@ sudo aptitude purge $OLDKERNELS
 echo -e $YELLOW"Emptying every trashes..."$ENDCOLOR
 rm -rf /home/*/.local/share/Trash/*/** &> /dev/null
 rm -rf /root/.local/share/Trash/*/** &> /dev/null
+
+#Apt Get Clean
+sudo apt-get --yes autoremove
+sudo apt-get --yes autoclean
+sudo apt-get --yes clean
  
-echo -e $YELLOW"Script Finished!"$ENDCOLOR
+echo -e $YELLOW"Script Finished"$ENDCOLOR
