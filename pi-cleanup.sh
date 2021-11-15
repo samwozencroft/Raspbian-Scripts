@@ -12,6 +12,11 @@ ENDCOLOR="\033[0m"
 #Installing dependencies
 echo -e $YELLOW"Installing dependencies..."$ENDCOLOR
 sudo apt install aptitude -y
+	#RPI Update
+sudo apt-get install git-core
+sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
+sudo rpi-update
+#sudo shutdown -r now
  
 if [ $USER != root ]; then
 echo -e $RED"Error: must be root"
@@ -54,10 +59,6 @@ while true; do
     esac
 done
 
-#RPI Update
-sudo apt-get install git-core
-sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
-sudo rpi-update
-#sudo shutdown -r now
+
  
 echo -e $YELLOW"Script Finished... Please reboot device."$ENDCOLOR
