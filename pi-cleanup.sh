@@ -30,16 +30,20 @@ echo -e $RED"Error: must be root"
 echo -e $YELLOW"Exiting..."$ENDCOLOR
 exit 0
 fi
- 
+
+ #Cleaning apt cache
 echo -e $YELLOW"Cleaning apt cache..."$ENDCOLOR
 aptitude clean
- 
+
+#Removing old #conf 
 echo -e $YELLOW"Removing old config files..."$ENDCOLOR
 sudo aptitude purge $OLDCONF
  
+ #Removing old Kernels
 echo -e $YELLOW"Removing old kernels..."$ENDCOLOR
 sudo aptitude purge $OLDKERNELS
  
+ #Recycle
 echo -e $YELLOW"Emptying every trashes..."$ENDCOLOR
 rm -rf /home/*/.local/share/Trash/*/** &> /dev/null
 rm -rf /root/.local/share/Trash/*/** &> /dev/null
