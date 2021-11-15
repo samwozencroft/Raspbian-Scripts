@@ -20,10 +20,9 @@ ENDCOLOR="\033[0m"
 echo -e $YELLOW"Installing dependencies..."$ENDCOLOR
 sudo apt install aptitude -y
 	#RPI Update
-sudo apt-get install git-core
-sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
-sudo rpi-update
-#sudo shutdown -r now
+	sudo apt-get install git-core
+	sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
+##sudo shutdown -r now
  
 if [ $USER != root ]; then
 echo -e $RED"Error: must be root"
@@ -62,11 +61,11 @@ sudo apt-get --yes clean
 #Prompt User for update
 echo -e $YELLOW"Do you wish to install this program?"$ENDCOLOR
 while true; do
-    read -p "Do you wish to install this program?" yn
+    read -p "" yn
     case $yn in
         [Yy]* ) sudo apt update -y && apt upgrade -y;;
-        [Nn]* ) ;;
-        * ) echo "Please answer y or n.";;
+        [Nn]* ) 
+        * )
     esac
 done
 
