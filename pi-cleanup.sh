@@ -59,13 +59,13 @@ sudo apt-get --yes clean
 #GPIO Removal
 #sudo apt-get purge python-rpi.gpio
 
-#Regening ssh keys
+#Prompt User for update
 echo -e $YELLOW"Do you wish to install this program?"$ENDCOLOR
 while true; do
     read -p "Do you wish to install this program?" yn
     case $yn in
-        [Yy]* ) make install; break;;
-        [Nn]* ) exit;;
+        [Yy]* ) sudo apt update -y && apt upgrade -y;;
+        [Nn]* ) ;;
         * ) echo "Please answer y or n.";;
     esac
 done
