@@ -60,4 +60,4 @@ sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/r
 sudo rpi-update
 #sudo shutdown -r now
  
-echo -e $YELLOW"Script Finished...Please reboot device"$ENDCOLOR
+echo -e $YELLOW"Script Finished... Please reboot device."$ENDCOLOR
