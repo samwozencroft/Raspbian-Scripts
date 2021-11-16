@@ -52,7 +52,7 @@ rm -rf /root/.local/share/Trash/*/** &> /dev/null
 
 #Removing unused packages
 echo -e $YELLOW"Removing unused packages..."$ENDCOLOR
-apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common
+sudo apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common
 
 #Apt Get Clean
 sudo apt-get --yes autoremove
@@ -69,8 +69,10 @@ sudo apt-get --yes clean
 
 #Purging all optional and extra packages that are not system required
 echo -e $YELLOW"Purging all optional and extra packages that are not system required"$ENDCOLOR
-sudo apt-get --simulate purge $(dpkg-query -Wf '${Package;-40}${Priority}\n' |
-    awk '$2 ~ /optional|extra/ { print $1 }')
+sudo apt-get purge $(dpkg-query -Wf \
+    '${Package;-40}${Priority}\n' | \
+    awk '$2 ~ /optional|extra/ { print $1 }' | \
+    grep -vE 'ssh|openssh-server|openssh-sftp-server|raspi-config|acl|rsync|lib|gawk|openssh|insserv|quota|sudo')
 
 #Prompt User for update
 #echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
