@@ -23,25 +23,28 @@ sudo apt install aptitude -y
 	sudo apt-get install git-core
 	sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
 ##sudo shutdown -r now
- 
+
 if [ $USER != root ]; then
 echo -e $RED"Error: must be root"
 echo -e $YELLOW"Exiting..."$ENDCOLOR
 exit 0
 fi
 
+#Removing Default pi user
+sudo deluser --remove-home pi
+
  #Cleaning apt cache
 echo -e $YELLOW"Cleaning apt cache..."$ENDCOLOR
 aptitude clean
 
-#Removing old #conf 
+#Removing old #conf
 echo -e $YELLOW"Removing old config files..."$ENDCOLOR
 sudo aptitude purge $OLDCONF
- 
+
  #Removing old Kernels
 echo -e $YELLOW"Removing old kernels..."$ENDCOLOR
 sudo aptitude purge $OLDKERNELS
- 
+
  #Recycle
 echo -e $YELLOW"Emptying every trashes..."$ENDCOLOR
 rm -rf /home/*/.local/share/Trash/*/** &> /dev/null
@@ -64,11 +67,11 @@ while true; do
     read -p "" yn
     case $yn in
         [Yy]* ) sudo apt update -y && apt upgrade -y;;
-        [Nn]* ) 
+        [Nn]* )
         * )
     esac
 done
 
 
- 
+
 echo -e $YELLOW"Script Finished... Please reboot device."$ENDCOLOR
