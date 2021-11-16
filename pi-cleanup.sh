@@ -62,9 +62,9 @@ sudo apt-get --yes clean
 #sudo apt-get purge python-rpi.gpio
 
 #Prompt User for update
-echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
+#echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
 while true; do
-    read -p "" yn
+    read -p "Do you wish to update? Key Y or N: " yn
     case $yn in
         [Yy]* ) sudo apt-get update && sudo apt update -y && apt upgrade -y && break;;
         [Nn]* ) break;;
