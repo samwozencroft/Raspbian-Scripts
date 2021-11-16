@@ -51,6 +51,7 @@ rm -rf /home/*/.local/share/Trash/*/** &> /dev/null
 rm -rf /root/.local/share/Trash/*/** &> /dev/null
 
 #Removing unused packages
+echo -e $YELLOW"Removing unused packages..."$ENDCOLOR
 apt-get purge --auto-remove scratch debian-reference-en dillo idle3 python3-tk idle python-pygame python-tk lightdm gnome-themes-standard gnome-icon-theme raspberrypi-artwork gvfs-backends gvfs-fuse desktop-base lxpolkit netsurf-gtk zenity xdg-utils mupdf gtk2-engines alsa-utils  lxde lxtask menu-xdg gksu midori xserver-xorg xinit xserver-xorg-video-fbdev libraspberrypi-dev libraspberrypi-doc dbus-x11 libx11-6 libx11-data libx11-xcb1 x11-common x11-utils lxde-icon-theme gconf-service gconf2-common
 
 #Apt Get Clean
@@ -71,7 +72,7 @@ sudo apt-get --yes clean
 while true; do
     read -p "Do you wish to update? Key Y or N: " yn
     case $yn in
-        [Yy]* ) sudo apt-get update && sudo apt update -y && apt upgrade -y && break;;
+        [Yy]* ) sudo apt update -y && apt upgrade -y && break;;
         [Nn]* ) break;;
     esac
 done
