@@ -62,17 +62,22 @@ sudo apt-get --yes clean
 #GPIO Removal
 #sudo apt-get purge python-rpi.gpio
 
-#Fix EXPKEYSIG B188E2B695BD4743 DEB.SURY.ORG Automatic Signing Key Error
+#Fix EXPKEYSIG B188E2B695BD4743 DEB.SURY.ORG Automatic Signing Key Error (issue with Deb 10)
  apt-key del B188E2B695BD4743
   curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
 	 apt update
+
+#Purging all optional and extra packages that are not system required
+echo -e $YELLOW"Purging all optional and extra packages that are not system required"$ENDCOLOR
+sudo apt-get --simulate purge $(dpkg-query -Wf '${Package;-40}${Priority}\n' |
+    awk '$2 ~ /optional|extra/ { print $1 }')
 
 #Prompt User for update
 #echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
 while true; do
     read -p "Do you wish to update? Key Y or N: " yn
     case $yn in
-        [Yy]* ) sudo apt update -y && apt upgrade -y && break;;
+        [Yy]* ) sudo apt autoremove && sudo apt update -y && apt upgrade -y && break;;
         [Nn]* ) break;;
     esac
 done
