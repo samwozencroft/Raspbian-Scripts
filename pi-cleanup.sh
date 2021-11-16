@@ -4,7 +4,7 @@
 #  pi-cleanup.sh
 #  by sam wozencroft
 #
-#  version 1
+#  version 1.1
 #######################
 
 OLDCONF=$(dpkg -l|grep "^rc"|awk '{print $2}')
@@ -16,19 +16,19 @@ YELLOW="\033[1;33m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
+#Checking For elevated
+if [ $USER != root ]; then
+echo -e $RED"Error: must be root"
+echo -e $YELLOW"Exiting..."$ENDCOLOR
+exit 0
+fi
+
 #Installing dependencies
 echo -e $YELLOW"Installing dependencies..."$ENDCOLOR
 sudo apt install aptitude -y
 	#RPI Update
 	sudo apt-get install git-core
 	sudo wget http://goo.gl/1BOfJ -O /usr/bin/rpi-update && sudo chmod +x /usr/bin/rpi-update
-##sudo shutdown -r now
-
-if [ $USER != root ]; then
-echo -e $RED"Error: must be root"
-echo -e $YELLOW"Exiting..."$ENDCOLOR
-exit 0
-fi
 
 #Removing Default pi user
 sudo deluser --remove-home pi
@@ -75,6 +75,5 @@ while true; do
         [Nn]* ) break;;
     esac
 done
-
 
 echo -e $YELLOW"Script Finished... Please reboot device."$ENDCOLOR
