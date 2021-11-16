@@ -61,6 +61,11 @@ sudo apt-get --yes clean
 #GPIO Removal
 #sudo apt-get purge python-rpi.gpio
 
+#Fix EXPKEYSIG B188E2B695BD4743 DEB.SURY.ORG Automatic Signing Key Error
+ apt-key del B188E2B695BD4743
+  curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+	 apt update
+
 #Prompt User for update
 #echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
 while true; do
