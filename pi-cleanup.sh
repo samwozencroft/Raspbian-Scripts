@@ -62,16 +62,14 @@ sudo apt-get --yes clean
 #sudo apt-get purge python-rpi.gpio
 
 #Prompt User for update
-echo -e $YELLOW"Do you wish to install this program?"$ENDCOLOR
+echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
 while true; do
     read -p "" yn
     case $yn in
-        [Yy]* ) sudo apt update -y && apt upgrade -y;;
-        [Nn]* )
-        * )
+        [Yy]* ) sudo apt-get update && sudo apt update -y && apt upgrade -y && break;;
+        [Nn]* ) break;;
     esac
 done
-
 
 
 echo -e $YELLOW"Script Finished... Please reboot device."$ENDCOLOR
