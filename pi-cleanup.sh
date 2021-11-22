@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash /usr/bin/sudo /usr/bin/python
 
 #######################
 #  pi-cleanup.sh
@@ -72,7 +72,7 @@ echo -e $YELLOW"Purging all optional and extra packages that are not system requ
 sudo apt-get purge $(dpkg-query -Wf \
     '${Package;-40}${Priority}\n' | \
     awk '$2 ~ /optional|extra/ { print $1 }' | \
-    grep -vE 'ssh|openssh-server|openssh-sftp-server|raspi-config|acl|rsync|lib|gawk|openssh|insserv|quota|sudo')
+    grep -vE 'wget|curl|opensll|raspinfo|dpkg|netcat-openbsd|git|init|hostname|grep|rpi-update|ssh|openssh-server|openssh-sftp-server|raspi-config|acl|rsync|lib|gawk|openssh|insserv|quota|sudo')
 
 #Prompt User for update
 #echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
