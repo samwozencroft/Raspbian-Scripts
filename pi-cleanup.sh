@@ -4,7 +4,7 @@
 #  pi-cleanup.sh
 #  by sam wozencroft
 #
-#  version 1.1
+#  version 1.4
 #######################
 
 OLDCONF=$(dpkg -l|grep "^rc"|awk '{print $2}')
