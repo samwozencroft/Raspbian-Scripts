@@ -33,7 +33,7 @@ sudo apt install aptitude -y
 #Removing Default pi user
 sudo deluser --remove-home pi
 
- #Cleaning apt cache
+#Cleaning apt cache
 echo -e $YELLOW"Cleaning apt cache..."$ENDCOLOR
 aptitude clean
 
@@ -41,11 +41,11 @@ aptitude clean
 echo -e $YELLOW"Removing old config files..."$ENDCOLOR
 sudo aptitude purge $OLDCONF
 
- #Removing old Kernels
+#Removing old Kernels
 echo -e $YELLOW"Removing old kernels..."$ENDCOLOR
 sudo aptitude purge $OLDKERNELS
 
- #Recycle
+#Recycle
 echo -e $YELLOW"Emptying every trashes..."$ENDCOLOR
 rm -rf /home/*/.local/share/Trash/*/** &> /dev/null
 rm -rf /root/.local/share/Trash/*/** &> /dev/null
@@ -63,25 +63,41 @@ sudo apt-get --yes clean
 #sudo apt-get purge python-rpi.gpio
 
 #Fix EXPKEYSIG B188E2B695BD4743 DEB.SURY.ORG Automatic Signing Key Error (issue with Deb 10)
- apt-key del B188E2B695BD4743
-  curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-	 apt update
+apt-key del B188E2B695BD4743
+ curl -sSL -o /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+	apt update
 
 #Purging all optional and extra packages that are not system required
 echo -e $YELLOW"Purging all optional and extra packages that are not system required"$ENDCOLOR
-sudo apt-get purge $(dpkg-query -Wf \
-    '${Package;-40}${Priority}\n' | \
-    awk '$2 ~ /optional|extra/ { print $1 }' | \
-    grep -vE 'wget|curl|opensll|raspinfo|dpkg|netcat-openbsd|git|init|hostname|grep|rpi-update|ssh|openssh-server|openssh-sftp-server|raspi-config|acl|rsync|lib|gawk|openssh|insserv|quota|sudo')
+#sudo apt-get purge $(dpkg-query -Wf \
+#    '${Package;-40}${Priority}\n' | \
+#    awk '$2 ~ /optional|extra/ { print $1 }' | \
+#    grep -vE '')
+#sudo apt autoremove -y
+sudo tasksel install ssh-server
+sudo apt autoremove --purge
+sudo apt-get clean
+
+#Creating daily reboot script
+echo -e $YELLOW"Creating daily reboot script"$ENDCOLOR
+cat <<END >/home/reboot10.sh
+shutdown -r 10 //reboot in 10 minutes
+END
+
+#Creating cron job for daily 4AM reboot
+sudo crontab -l > cron_bkp
+sudo echo "0 4 * * * sudo ./home/reboot10.sh >/dev/null 2>&1" >> cron_bkp
+sudo crontab cron_bkp
+sudo rm cron_bkp
 
 #Prompt User for update
 #echo -e $YELLOW"Do you wish to update? Key Y or N"$ENDCOLOR
 while true; do
-    read -p "Do you wish to update? Key Y or N: " yn
-    case $yn in
-        [Yy]* ) sudo apt autoremove && sudo apt update -y && apt upgrade -y && break;;
-        [Nn]* ) break;;
-    esac
+	 read -p "Do you wish to update? Key Y or N: " yn
+	 case $yn in
+			 [Yy]* ) sudo apt autoremove && sudo apt update -y && apt upgrade -y && break;;
+			 [Nn]* ) break;;
+	 esac
 done
 
 echo -e $YELLOW"Script Finished... Please reboot device."$ENDCOLOR
