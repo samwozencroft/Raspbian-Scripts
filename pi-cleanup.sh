@@ -1,10 +1,10 @@
-#!/bin/bash /usr/bin/sudo /usr/bin/python
+#!/bin/bash /usr/bin/python
 
 #######################
 #  pi-cleanup.sh
 #  by sam wozencroft
 #
-#  version 1.4
+#  version 1.41
 #######################
 
 OLDCONF=$(dpkg -l|grep "^rc"|awk '{print $2}')
