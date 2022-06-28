@@ -18,7 +18,7 @@ Install SNMP Script
 Run the following in the Linux Shell.
 
 ```yaml
-bash <(curl -s https://raw.githubusercontent.com/samwozencroft/Proxmox-Scripts/main/darktheme.sh ) install
+bash <(curl -s https://raw.githubusercontent.com/therealsocialproject/Linux-Scripts/main/SNMP/snmp_service_setup_allow_polling.sh ) install
 ```
 
 To uninstall SNMP, simply run the script with the `uninstall` command.
