@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 #######################
 #  snmp_service_setup_allow_polling.sh
