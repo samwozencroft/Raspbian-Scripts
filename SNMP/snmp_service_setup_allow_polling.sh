@@ -17,11 +17,11 @@ RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
 #Checking For elevated
-# if [ $USER != root ]; then
-# echo -e $RED"Error: must be root"
-# echo -e $YELLOW"Exiting..."$ENDCOLOR
-# exit 0
-# fi
+ if [ $USER != root ]; then
+ echo -e $RED"Error: must be root"
+ echo -e $YELLOW"Exiting..."$ENDCOLOR
+ exit 0
+ fi
 
 #Installing dependencies
 echo -e $YELLOW"Installing dependencies..."$ENDCOLOR
