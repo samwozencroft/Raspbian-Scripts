@@ -16,10 +16,17 @@ YELLOW="\033[1;33m"
 RED="\033[0;31m"
 ENDCOLOR="\033[0m"
 
+#Checking For elevated
+ if [ $USER != root ]; then
+ echo -e $RED"Error: must be root"
+ echo -e $YELLOW"Exiting..."$ENDCOLOR
+ exit 0
+ fi
+
 #Installing dependencies
 echo -e $YELLOW"Installing dependencies..."$ENDCOLOR
-apt update -y && sudo apt upgrade -y
+sudo apt update -y && sudo apt upgrade -y
 	#RPI Update
-apt install snmpd -y 
-systemctl enable snmpd
-systemctl start snmpd
+sudo apt install snmpd -y 
+sudo systemctl enable snmpd
+sudo systemctl start snmpd
