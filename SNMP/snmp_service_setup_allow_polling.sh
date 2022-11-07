@@ -18,8 +18,8 @@ ENDCOLOR="\033[0m"
 
 #Installing dependencies
 echo -e $YELLOW"Installing dependencies..."$ENDCOLOR
-sudo apt update -y && sudo apt upgrade -y
+apt update -y && sudo apt upgrade -y
 	#RPI Update
-sudo apt install snmpd -y 
-sudo systemctl enable snmpd
-sudo systemctl start snmpd
+apt install snmpd -y 
+systemctl enable snmpd
+systemctl start snmpd
