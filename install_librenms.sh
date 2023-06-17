@@ -1,7 +1,3 @@
-# LibreNMS Install script
-# NOTE: Script wil update and upgrade currently installed packages.
-# forked from straytripod/LibreNMS-Install
-# created and maintained from rawIce/LibreNMS-Install
 #!/bin/bash
 
 ##### Check if sudo
@@ -42,6 +38,8 @@ useradd librenms -d /opt/librenms -M -r -s "$(which bash)"
 ##### Download LibreNMS itself
 echo "Downloading libreNMS to /opt/librenms"
 echo "###########################################################"
+# check if /opt directory exists, if not create it
+mkdir -p /opt
 cd /opt
 git clone https://github.com/librenms/librenms.git
 # Set permissions
@@ -81,8 +79,9 @@ timedatectl set-timezone $TZ
 echo "Setting PHP time zone"
 echo "Changing to $TZ"
 echo "################################################################################"
-sed -i "/;date.timezone =/ a date.timezone = $TZ" /etc/php/7.4/fpm/php.ini
-sed -i "/;date.timezone =/ a date.timezone = $TZ" /etc/php/7.4/cli/php.ini
+# Remove semicolon before date.timezone and set the timezone
+sed -i "s/;date.timezone =/date.timezone = $TZ/g" /etc/php/7.4/fpm/php.ini
+sed -i "s/;date.timezone =/date.timezone = $TZ/g" /etc/php/7.4/cli/php.ini
 
 ##### Configure PHP-FPM
 echo "Configure PHP-FPM (FastCGI Process Manager)"
@@ -93,7 +92,7 @@ sed -i 's/^user = www-data/user = librenms/' /etc/php/7.4/fpm/pool.d/librenms.co
 sed -i 's/^group = www-data/group = librenms/' /etc/php/7.4/fpm/pool.d/librenms.conf
 sed -i 's/^listen =.*/listen = \/run\/php-fpm-librenms.sock/' /etc/php/7.4/fpm/pool.d/librenms.conf
 
-##### Configure web server (NGINX
+##### Configure web server (NGINX)
 echo "Configure web server (NGINX)"
 echo "###########################################################"
 # Create NGINX .conf file
@@ -101,28 +100,31 @@ echo "We need to change the sever name to the current IP unless the name is reso
 echo "################################################################################"
 echo "Enter nginx server_name [x.x.x.x or serv.examp.com]: "
 read HOSTNAME
-echo 'server {'> /etc/nginx/conf.d/librenms.conf
-echo ' listen      80;' >>/etc/nginx/conf.d/librenms.conf
-echo " server_name $HOSTNAME;" >>/etc/nginx/conf.d/librenms.conf
-echo ' root        /opt/librenms/html;' >>/etc/nginx/conf.d/librenms.conf
-echo ' index       index.php;' >>/etc/nginx/conf.d/librenms.conf
-echo ' ' >>/etc/nginx/conf.d/librenms.conf
-echo ' charset utf-8;' >>/etc/nginx/conf.d/librenms.conf
-echo ' gzip on;' >>/etc/nginx/conf.d/librenms.conf
-echo ' gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml \
-text/plain text/xsd text/xsl text/xml image/x-icon;' >>/etc/nginx/conf.d/librenms.conf
-echo ' location / {' >>/etc/nginx/conf.d/librenms.conf
-echo '  try_files $uri $uri/ /index.php?$query_string;' >>/etc/nginx/conf.d/librenms.conf
-echo ' }' >>/etc/nginx/conf.d/librenms.conf
-echo ' location ~ [^/]\.php(/|$) {' >>/etc/nginx/conf.d/librenms.conf
-echo '  fastcgi_pass unix:/run/php-fpm-librenms.sock;' >>/etc/nginx/conf.d/librenms.conf
-echo '  fastcgi_split_path_info ^(.+\.php)(/.+)$;' >>/etc/nginx/conf.d/librenms.conf
-echo '  include fastcgi.conf;' >>/etc/nginx/conf.d/librenms.conf
-echo ' }' >>/etc/nginx/conf.d/librenms.conf
-echo ' location ~ /\.(?!well-known).* {' >>/etc/nginx/conf.d/librenms.conf
-echo '  deny all;' >>/etc/nginx/conf.d/librenms.conf
-echo ' }' >>/etc/nginx/conf.d/librenms.conf
-echo '}' >>/etc/nginx/conf.d/librenms.conf
+# Write nginx configuration to file using here document
+cat > /etc/nginx/conf.d/librenms.conf << EOF
+server {
+    listen      80;
+    server_name $HOSTNAME;
+    root        /opt/librenms/html;
+    index       index.php;
+
+    charset utf-8;
+    gzip on;
+    gzip_types text/css application/javascript text/javascript application/x-javascript image/svg+xml \
+    text/plain text/xsd text/xsl text/xml image/x-icon;
+    location / {
+        try_files \$uri \$uri/ /index.php?\$query_string;
+    }
+    location ~ [^/]\.php(/|\$) {
+        fastcgi_pass unix:/run/php-fpm-librenms.sock;
+        fastcgi_split_path_info ^(.+\.php)(/.+)\$;
+        include fastcgi.conf;
+    }
+    location ~ /\.(?!well-known).* {
+        deny all;
+    }
+}
+EOF
 # remove the default site link
 rm /etc/nginx/sites-enabled/default
 systemctl restart nginx
@@ -146,8 +148,7 @@ sed -i "s/RANDOMSTRINGGOESHERE/$ANS/g" /etc/snmp/snmpd.conf
 # get standard MIBs
 curl -o /usr/bin/distro https://raw.githubusercontent.com/librenms/librenms-agent/master/snmp/distro
 chmod +x /usr/bin/distro
-systemctl enable snmpd
-systemctl restart snmpd
+systemctl enable --now snmpd
 
 ##### Setup Cron job
 echo "Setup LibreNMS Cron job"
@@ -175,5 +176,5 @@ sudo su librenms bash -c '/opt/librenms/scripts/github-remove -d'
 
 ##### End of installation, continue in web browser
 echo "###############################################################################################"
-echo "Naviagte to http://$HOSTNAME/install.php in you web browser to finish the installation."
+echo "Navigate to http://$HOSTNAME/install.php in your web browser to finish the installation."
 echo "###############################################################################################"
